@@ -361,6 +361,14 @@ body.op-lock{overflow:hidden}
 .card .ld{flex:1}
 #rDos .pts{margin-bottom:6px}
 .help .note{color:var(--tx2)}
+.amz{margin:16px 0 4px;text-align:center}
+.ttsbox{margin:12px 0 4px;padding:10px 12px;border:1px solid var(--line);border-radius:12px}
+.ttsbox h4{margin:0 0 8px;font-size:calc(15px * var(--k))}
+.rep.tts button{flex:1 1 40%}
+.amz a{display:block;padding:14px 16px;border-radius:14px;background:linear-gradient(180deg,#ffb84d,#ff9900);color:#1a1205;font-weight:900;font-size:calc(17px * var(--k));text-decoration:none;box-shadow:0 4px 14px rgba(255,153,0,.28)}
+.amz a:hover{filter:brightness(1.05)}
+.amz a small{display:block;font-weight:700;font-size:calc(12px * var(--k));opacity:.8;margin-top:2px}
+.amz p{margin:6px 0 0;font-size:calc(11px * var(--k));color:var(--tx2)}
 </style>
 </head>
 <body class="op-lock">
@@ -434,9 +442,10 @@ body.op-lock{overflow:hidden}
         <li>最後に、ランク(S〜D)と、<b>場面ごとに覚えておきたい対策</b>、相談先が表示されます。</li>
       </ol>
       <p class="note">登場する人物・会社・場面はすべて架空です。手口は、警察や報道で紹介されている例をもとにしたゲーム上の想定です。危険を感じたら、ためらわず<b>110番</b>を。</p>
-      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.21-v12(結果の声をランクに合わせて修正)</p>
+      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.21-v14(読み上げ機能)</p>
       <div class="t-links">
         <button type="button" onclick="openAbout()">🕵️ トクリュウとは・最新の状況</button>
+        <button type="button" onclick="openTts()">🗣️ 読み上げの設定(全体/テロップだけ/重要事項だけ)</button>
         <button type="button" onclick="openPriv()">📄 プライバシーポリシー・ご利用にあたって</button>
       </div>
     </div>
@@ -468,6 +477,7 @@ body.op-lock{overflow:hidden}
           <span class="t" id="gTitle">トクリュウ防犯シミュレーター</span>
           <button type="button" id="sndBtn" onclick="toggleSound()" title="サウンドのオン/オフ" aria-label="サウンド切替">🔊</button>
           <button type="button" onclick="openSnd()" title="BGM・音量" aria-label="BGM・音量">🎵</button>
+          <button type="button" id="ttsBtn" onclick="openTts()" title="読み上げ" aria-label="読み上げの設定">🗣️</button>
           <button type="button" onclick="openLog()" title="これまでの記録" aria-label="これまでの記録">📜</button>
           <button type="button" onclick="quitGame()" title="シチュエーション選択にもどる" aria-label="もどる">✕</button>
         </div>
@@ -534,6 +544,10 @@ body.op-lock{overflow:hidden}
           <button class="btn sub" type="button" style="color:var(--tx);border-color:var(--line)" onclick="shareResult(event)">結果を共有</button>
           <button class="btn sub" type="button" style="color:var(--tx);border-color:var(--line)" onclick="toTitle()">タイトルへ</button>
         </div>
+        <div class="amz">
+          <a href="https://link.amazon/B07uDN948" target="_blank" rel="noopener sponsored">🛒 Amazon防犯対策グッズ<small>補助錠・防犯フィルム・センサーライト・防犯カメラなど ↗</small></a>
+          <p>※Amazonのアソシエイトとして、DWA防災情報センターは適格販売により収入を得ています。</p>
+        </div>
         <p class="disc">このシミュレーターの手口・被害の出方は、警察や報道で紹介されている例を参考にしたゲーム上の想定で、実際の事件とは異なります。「最も危険」は、被害が身体・生命に及ぶという意味での警鐘です。実際に危険を感じたら、ためらわず110番、事件になる前の相談は#9110へ。</p>
       </div>
     </div>
@@ -585,8 +599,10 @@ body.op-lock{overflow:hidden}
   <div class="mnu-list">
     <button class="mnu-i" type="button" onclick="closeMenu();openAbout()"><span class="ic">🕵️</span><span>トクリュウとは・最新の状況<small>手口の特徴と、確認できた最新の数字</small></span></button>
     <button class="mnu-i" type="button" onclick="closeMenu();openPriv()"><span class="ic">📄</span><span>プライバシーポリシー・ご利用にあたって<small>このシミュレーターの位置づけ、保存する情報、免責事項など</small></span></button>
+    <button class="mnu-i" type="button" onclick="closeMenu();openTts()"><span class="ic">🗣️</span><span>読み上げ<small>全体/テロップだけ/重要事項だけ を選べます</small></span></button>
     <button class="mnu-i" type="button" onclick="closeMenu();openSnd()"><span class="ic">🎵</span><span>BGM・音量<small>ロック・クラシック・シンセから選べます</small></span></button>
     <button class="mnu-i op-only" type="button" onclick="closeMenu();opStart(true)"><span class="ic">🎬</span><span>オープニングを音ありで見る</span></button>
+    <a class="mnu-i" href="https://link.amazon/B07uDN948" target="_blank" rel="noopener sponsored" onclick="closeMenu()"><span class="ic">🛒</span><span>Amazon防犯対策グッズ<small>補助錠・センサーライト・防犯カメラなど ↗</small></span></a>
     <a class="mnu-i" href="https://bousai0111.info/" target="_blank" rel="noopener" onclick="closeMenu()"><span class="ic">🏠</span><span>DWA防災情報センター<small>トップページを開きます ↗</small></span></a>
   </div>
   <div style="text-align:right;margin-top:10px"><button class="back" type="button" onclick="closeMenu()">閉じる</button></div>
@@ -628,12 +644,14 @@ body.op-lock{overflow:hidden}
   <ul>
     <li>共有ボタン(X・LINE)は、押したときだけ各サービスのページを開きます。</li>
     <li>結果画面の電話番号のボタンは、押したときだけお使いの端末の電話アプリを開きます。</li>
+    <li>「Amazon防犯対策グッズ」は、Amazonへのリンク(アソシエイト・リンク)です。DWA防災情報センターは、Amazonのアソシエイトとして適格販売により収入を得ています。リンク先での購入や個人情報の取り扱いは、Amazonの利用規約・プライバシー規約に従います。</li>
   </ul>
 
   <h4>6. 音声・音楽・画像</h4>
   <ul>
     <li>ロックのBGMは、BGMer(フリーBGM)の楽曲を使用しています。効果音の一部は、ブラウザの中で合成しています。</li>
     <li>サウンドは最初はオフで、ボタンを押したときだけ鳴ります。周りの状況に合わせて音量を調整してください。</li>
+    <li>読み上げは、お使いのブラウザ・端末に備わっている音声合成の機能を使います。声や読み方は端末によって異なり、端末の設定によっては、その端末やOSの提供元の仕組みで処理されることがあります。</li>
   </ul>
 
   <h4>7. 免責事項</h4>
@@ -669,6 +687,12 @@ body.op-lock{overflow:hidden}
   <div class="vol"><label for="bvR">BGMの音量</label><input type="range" id="bvR" min="0" max="100" step="5" oninput="setBgmVol(+this.value)"><span id="bvLb"></span></div>
   <div class="vol"><label for="svR">効果音の音量</label><input type="range" id="svR" min="0" max="100" step="5" oninput="setSeVol(+this.value)" onchange="setSeVol(+this.value,true)"><span id="svLb"></span></div>
   <label class="chk"><input type="checkbox" id="tsC" onchange="setTypeSnd(this.checked)"> 文字が出るときの「カタカタ」音</label>
+  <div id="ttsBox" class="ttsbox">
+    <h4>🗣️ 読み上げ</h4>
+    <div class="rep tts" id="ttsSeg" role="group" aria-label="読み上げのしかた"></div>
+    <p class="now sm" id="ttsDesc"></p>
+    <div class="vol"><label for="ttsR">読み上げの速さ</label><input type="range" id="ttsR" min="60" max="200" step="10" oninput="setTtsRate(this.value/100)" onchange="setTtsRate(this.value/100,true)"><span id="ttsRLb"></span></div>
+  </div>
   <div style="text-align:right;margin-top:8px"><button class="back" type="button" onclick="closeSnd()">閉じる</button></div>
 </div></div>
 
@@ -1644,6 +1668,7 @@ function judge(ok, o){
     tl((ok ? '○ ' : '× ') + (o.log || o.t));
     addLog(ok ? '✅' : '⚠️', esc(o.t));
     $('ovJd').classList.add('on');
+    ttsJudge(ok, o);
     var b = $('jdOk');
     setTimeout(function(){ try{ b.focus({preventScroll:true}); }catch(e){} }, 60);
     b.onclick = function(ev){
@@ -1683,8 +1708,8 @@ function runFlow(fn){
   var my = RUN;
   fn().then(function(){}, function(e){ if(!(e instanceof Abort)){ console.error(e); if(my === RUN) toast('エラーが発生しました。もう一度お試しください'); } });
 }
-function startApp(sound){ preloadPacks(); setSound(sound); se('click'); if(BASE) showSelect(); else runSetup(); }
-function toTitle(){ RUN++; waiter = null; closeJd(); bgm('off'); show('scTitle'); updateTitle(); }
+function startApp(sound){ preloadPacks(); ttsUnlock(); if(!TTS.mode && TTS.ok){ TTS.mode = sound ? 'all' : 'off'; ls(PFX + 'tts', TTS.mode); renderTts(); } setSound(sound); se('click'); if(BASE) showSelect(); else runSetup(); }
+function toTitle(){ ttsStop(); RUN++; waiter = null; closeJd(); bgm('off'); show('scTitle'); updateTitle(); }
 function quitGame(){
   if(!(window.confirm ? window.confirm('シチュエーション選択にもどりますか?(この場面の進み具合は消えます)') : true)) return;
   RUN++; waiter = null; if(typing){ clearInterval(typing.t); typing = null; }
@@ -1738,6 +1763,7 @@ async function setupMain(){
 
 /* ===================== シチュエーション選択 ===================== */
 function showSelect(){
+  ttsStop();
   RUN++; waiter = null; closeJd(); bgm('off');
   if(!BASE){ runSetup(); return; }
   var done = 0;
@@ -2299,6 +2325,7 @@ function showResult(rank, label){
   }).join('');
   $('rTl').innerHTML = S.tl.map(function(x){ return '<li><b>' + esc(x.d) + '</b>' + esc(x.t) + '</li>'; }).join('');
   show('scResult');
+  ttsResult();
 }
 function shareResult(ev){
   var r = $('rRank').textContent, t = CUR.mode === 'all' ? '7つのシチュエーションすべて' : '「' + scnById(CUR.id).t + '」';
@@ -2310,6 +2337,125 @@ function openAbout(){ var o = $('ovAbout'); o.classList.add('on'); var b = o.que
 function closeAbout(){ $('ovAbout').classList.remove('on'); }
 document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && $('ovAbout').classList.contains('on')) closeAbout(); });
 if(!OP_ENABLED) document.querySelectorAll('.op-only').forEach(function(el){ el.style.display = 'none'; });
+
+
+/* =========================================================
+   読み上げ(ブラウザの音声合成 Web Speech API)
+   モード:all 全体 / telop テロップだけ / important 重要事項だけ / off
+   ・テロップ  … 画面下のメッセージ(流れてくる文章と質問)
+   ・重要事項  … 判定(何が起きたか・こうすれば安全)と結果画面(ランク・危なかった判断・ポイント・やること・相談先・注意事項)
+   ・全体      … 上の両方+選択肢
+   ========================================================= */
+var TTS = {
+  ok: !!(window.speechSynthesis && window.SpeechSynthesisUtterance),
+  mode: ls(PFX + 'tts') || '',          // '' = まだ選んでいない
+  rate: +(ls(PFX + 'ttsRate') || 1.1),
+  voice: null, gen: 0
+};
+if(!(TTS.rate >= 0.6 && TTS.rate <= 2)) TTS.rate = 1.1;
+var TTS_KINDS = { all:{telop:1, choice:1, judge:1, result:1}, telop:{telop:1}, important:{judge:1, result:1}, off:{} };
+var TTS_LABEL = { all:'全体を読み上げる', telop:'テロップだけ読み上げる', important:'重要事項だけ読み上げる', off:'読み上げない' };
+
+function ttsPickVoice(){
+  if(!TTS.ok) return;
+  var vs = speechSynthesis.getVoices().filter(function(v){ return /^ja/i.test(v.lang); });
+  if(!vs.length){ TTS.voice = null; return; }
+  var pref = [/Nanami/i, /Google/i, /Kyoko/i, /O-?ren/i, /Haruka/i, /Ayumi/i, /Otoya/i];
+  for(var i = 0; i < pref.length; i++){ for(var j = 0; j < vs.length; j++){ if(pref[i].test(vs[j].name)) { TTS.voice = vs[j]; return; } } }
+  TTS.voice = vs[0];
+}
+if(TTS.ok){ ttsPickVoice(); try{ speechSynthesis.addEventListener('voiceschanged', ttsPickVoice); }catch(e){ speechSynthesis.onvoiceschanged = ttsPickVoice; } }
+
+/* 読み上げ用に文章を整える(記号・絵文字・タグを読みやすく) */
+function ttsClean(s){
+  var d = document.createElement('div'); d.innerHTML = String(s).replace(/<br\s*\/?>/gi, '。');
+  var t = d.textContent || '';
+  t = t.replace(/#9110/g, 'シャープ9110').replace(/＃9110/g, 'シャープ9110')
+       .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '')
+       .replace(/[▶▼↺✕↗※★☆]/g, '').replace(/[「」『』【】]/g, '')
+       .replace(/S〜D/g, 'SからD').replace(/〜/g, 'から').replace(/−/g, 'マイナス')
+       .replace(/\s+/g, ' ').replace(/。\s*。+/g, '。').trim();
+  return t;
+}
+/* Chrome は長い文を途中で止めることがあるので、文ごとに分けて順番に読む */
+function ttsSplit(t){
+  var out = [], parts = t.split(/(?<=[。！？!?])\s*/);
+  parts.forEach(function(p){ p = p.trim(); if(!p) return;
+    while(p.length > 110){ var k = p.lastIndexOf('、', 110); if(k < 40) k = 110; out.push(p.slice(0, k + 1)); p = p.slice(k + 1); }
+    if(p) out.push(p);
+  });
+  return out;
+}
+function ttsAllowed(kind){ return TTS.ok && TTS.mode && TTS.mode !== 'off' && !!(TTS_KINDS[TTS.mode] || {})[kind]; }
+function ttsStop(){ TTS.gen++; if(TTS.ok){ try{ speechSynthesis.cancel(); }catch(e){} } }
+/* 読み上げる。queue=true なら前の読み上げのあとに続けて読む */
+function ttsSpeak(text, kind, queue){
+  if(!ttsAllowed(kind)) return;
+  var t = ttsClean(text); if(!t) return;
+  if(!queue) ttsStop();
+  var g = TTS.gen, chunks = ttsSplit(t);
+  if(SND && SND.on) duckBgm(Math.min(25, t.length / (7.5 * TTS.rate) + 0.5));
+  chunks.forEach(function(c){
+    var u = new SpeechSynthesisUtterance(c);
+    u.lang = 'ja-JP'; if(TTS.voice) u.voice = TTS.voice; u.rate = TTS.rate; u.pitch = 1;
+    u.onstart = function(){ if(g !== TTS.gen){ try{ speechSynthesis.cancel(); }catch(e){} } };
+    try{ speechSynthesis.speak(u); }catch(e){}
+  });
+}
+/* iPhone などは、最初の読み上げをボタン操作の中で行わないと鳴らないため */
+function ttsUnlock(){ if(!TTS.ok || TTS.unlocked) return; TTS.unlocked = true; try{ var u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); }catch(e){} }
+
+function setTtsMode(m, silent){
+  TTS.mode = m; ls(PFX + 'tts', m); ttsStop(); renderTts();
+  if(!silent){ ttsUnlock(); if(m !== 'off') ttsSpeakForce(TTS_LABEL[m] + '。'); toast('🗣️ ' + TTS_LABEL[m]); }
+}
+function setTtsRate(v, fin){ TTS.rate = Math.max(0.6, Math.min(2, v)); ls(PFX + 'ttsRate', String(TTS.rate)); renderTts(); if(fin) ttsSpeakForce('この速さで読み上げます。'); }
+function ttsSpeakForce(text){ if(!TTS.ok) return; var m = TTS.mode; TTS.mode = 'all'; ttsSpeak(text, 'telop'); TTS.mode = m; }
+function renderTts(){
+  var seg = $('ttsSeg'); if(!seg) return;
+  if(!TTS.ok){ $('ttsBox').innerHTML = '<p class="now sm">⚠️ この端末・ブラウザは読み上げに対応していません。</p>'; return; }
+  var cur = TTS.mode || 'off';
+  seg.innerHTML = ['all','telop','important','off'].map(function(m){
+    return '<button type="button" class="' + (m === cur ? 'on' : '') + '" aria-pressed="' + (m === cur) + '" onclick="setTtsMode(\'' + m + '\')">' + {all:'📢 全体', telop:'💬 テロップだけ', important:'⚠️ 重要事項だけ', off:'🔇 オフ'}[m] + '</button>';
+  }).join('');
+  $('ttsR').value = Math.round(TTS.rate * 100); $('ttsRLb').textContent = TTS.rate.toFixed(1) + '倍';
+  $('ttsDesc').textContent = {all:'流れてくるメッセージ・選択肢・判定・結果と注意事項を、すべて読み上げます。', telop:'画面下に流れてくるメッセージと質問だけを読み上げます。', important:'判定(何が起きたか・こうすれば安全)と、結果画面(ランク・ポイント・やること・相談先・注意事項)だけを読み上げます。', off:'読み上げません。'}[cur];
+  var hb = $('ttsBtn'); if(hb){ hb.textContent = cur === 'off' ? '🔈' : '🗣️'; hb.title = '読み上げ:' + TTS_LABEL[cur]; }
+}
+function openTts(){ openSnd(); setTimeout(function(){ var b = $('ttsBox'); if(b && b.scrollIntoView) b.scrollIntoView({block:'center', behavior:'smooth'}); }, 60); }
+
+/* --- 既存の流れに読み上げを組み込む --- */
+var _say0 = say, _ask0 = ask, _askMulti0 = askMulti;
+say = function(text, o, nm){ var p = _say0(text, o, nm); if(o !== undefined || text) ttsSpeak((nm ? nm + '。' : '') + text, 'telop'); return p; };
+function ttsChoices(opts){
+  if(!ttsAllowed('choice')) return;
+  var L = opts.filter(function(x){ return x.if !== false; });
+  ttsSpeak('選択肢。' + L.map(function(x, i){ return (i + 1) + '、' + x.t + (x.sub ? '。' + x.sub : '') + '。'; }).join(''), 'choice', true);
+}
+ask = function(q, opts, o){ var p = _ask0(q, opts, o); ttsSpeak(q, 'telop'); ttsChoices(opts); return p; };
+askMulti = function(q, opts, o){ var p = _askMulti0(q, opts, o); ttsSpeak(q, 'telop'); ttsChoices(opts); return p; };
+
+function ttsJudge(ok, o){
+  if(!ttsAllowed('judge')) return;
+  var d = o.d || {}, parts = [];
+  ['safe','money','info'].forEach(function(k){ if(d[k]) parts.push(LABEL[k] + (d[k] > 0 ? 'プラス' : 'マイナス') + Math.abs(d[k])); });
+  ttsSpeak((ok ? '安全な判断。' : '危険な判断。') + o.t + '。' + (parts.length ? 'この判断の影響、' + parts.join('、') + '。' : '') +
+    '何が起きたか。' + (o.res || '') + '。こうすれば安全。' + (o.why || ''), 'judge');
+}
+function ttsResult(){
+  if(!ttsAllowed('result')) return;
+  var li = function(id){ return Array.prototype.map.call(document.querySelectorAll('#' + id + ' li'), function(x){ return x.textContent; }).join('。'); };
+  var txt = $('rTitle').textContent + '。結果はランク' + $('rRank').textContent + '。' + $('rLabel').textContent + '。' +
+    '身の安全' + $('rSafe').textContent + '、お金・財産' + $('rMoney').textContent + '、個人情報' + $('rInfo').textContent + '。' +
+    '安全な判断' + $('rGood').textContent + '、危険な判断' + $('rBadN').textContent + '。' +
+    '危なかった判断。' + li('rBad') + '。覚えておきたいポイント。' + li('rPts') + '。' +
+    '場面別のやること。' + Array.prototype.map.call(document.querySelectorAll('#rDos p, #rDos li'), function(x){ return x.textContent; }).join('。') + '。' +
+    '相談先。いま危険があるときは110番。事件になる前の相談は、シャープ9110。お金のトラブルは188、消費者ホットライン。' +
+    '注意事項。' + (document.querySelector('#scResult .disc') || {textContent:''}).textContent;
+  setTimeout(function(){ ttsSpeak(txt, 'result'); }, 1600);   /* 結果の効果音のあとに読む */
+}
+document.addEventListener('visibilitychange', function(){ if(document.hidden) ttsStop(); });
+renderTts();
 
 </script>
 </body>
