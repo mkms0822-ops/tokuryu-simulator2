@@ -434,7 +434,7 @@ body.op-lock{overflow:hidden}
         <li>最後に、ランク(S〜D)と、<b>場面ごとに覚えておきたい対策</b>、相談先が表示されます。</li>
       </ol>
       <p class="note">登場する人物・会社・場面はすべて架空です。手口は、警察や報道で紹介されている例をもとにしたゲーム上の想定です。危険を感じたら、ためらわず<b>110番</b>を。</p>
-      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.21-v11(v_questions を差し替え)</p>
+      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.21-v12(結果の声をランクに合わせて修正)</p>
       <div class="t-links">
         <button type="button" onclick="openAbout()">🕵️ トクリュウとは・最新の状況</button>
         <button type="button" onclick="openPriv()">📄 プライバシーポリシー・ご利用にあたって</button>
@@ -1245,7 +1245,7 @@ function askMulti(q, opts, o){
   });
 }
 /* ===================== 結果の効果音(se/ フォルダの音声ファイル) ===================== */
-var SEF = {"clap1":"se/clap1.mp3","clap2":"se/clap2.mp3","sugoi":"se/v-sugoi.mp3","atochotto":"se/v-atochotto.mp3","mouhitoiki":"se/v-mouhitoiki.mp3","zannen":"se/v-zannen.mp3"};
+var SEF = {"clap1":"se/clap1.mp3?v=20261121b","clap2":"se/clap2.mp3?v=20261121b","sugoi":"se/v-sugoi.mp3?v=20261121b","atochotto":"se/v-atochotto.mp3?v=20261121b","mouhitoiki":"se/v-mouhitoiki.mp3?v=20261121b","zannen":"se/v-zannen.mp3?v=20261121b"};
 var RESULT_SE = {
   S: [['clap1', 0], ['sugoi', 0.35]],      // 拍手と歓声 +「すごいすごい!」
   A: [['clap2', 0], ['atochotto', 0.4]],   // 拍手 +「あとちょっとだったね」
