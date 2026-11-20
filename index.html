@@ -733,6 +733,8 @@ document.addEventListener('click', function(e){ var p = document.getElementById(
 function numLs(k, d){ var v = parseFloat(ls(k)); return isNaN(v) ? d : Math.min(1, Math.max(0, v)); }
 /* BGM:bgm/ フォルダの曲(ロック・クラシック)か、ブラウザ内の合成音から選べます */
 var BGM_DIR = 'bgm/';
+/* 曲ファイルを探す場所(上から順に)。bgm フォルダに入れ忘れても再生できるように */
+var BGM_DIRS = ['bgm/', '', 'bgm/bgm/', 'BGM/'], bgmDirOk = 0;
 var ROCK_READY = true;   // false にするとロックのタブを隠せます
 var GENRES = [
   {id:'rock',    t:'ロック',     ic:'🎸'},
@@ -742,21 +744,21 @@ var GENRES = [
 ].filter(function(g){ return ROCK_READY || g.id !== 'rock'; });
 /* クラシック(6曲) */
 var CLASSIC = [
-  {id:'classic1-kaiki',    t:'世にも奇怪な物語', len:'4分34秒'},
-  {id:'classic2-nazotoki', t:'謎解きをしよう',   len:'10分11秒'},
-  {id:'classic3-shinso',   t:'真相はここに',     len:'10分40秒'},
-  {id:'classic4-kaisen',   t:'荒波の海戦',       len:'10分37秒'},
-  {id:'classic5-tegami',   t:'手紙を出すよ',     len:'10分03秒'},
-  {id:'classic6-namida',   t:'涙の結晶',         len:'10分28秒'}
+  {id:'classic1-kaiki',    t:'世にも奇怪な物語(クラシック版)', len:'4分34秒'},
+  {id:'classic2-nazotoki', t:'謎解きをしよう(クラシック版)',   len:'10分11秒'},
+  {id:'classic3-shinso',   t:'真相はここに(クラシック版)',     len:'10分40秒'},
+  {id:'classic4-kaisen',   t:'荒波の海戦(クラシック版)',       len:'10分37秒'},
+  {id:'classic5-tegami',   t:'手紙を出すよ(クラシック版)',     len:'10分03秒'},
+  {id:'classic6-namida',   t:'涙の結晶(クラシック版)',         len:'10分28秒'}
 ];
 /* ロック(6曲・クラシックと同じ曲のロックアレンジ) */
 var ROCK = [
-  {id:'rock1-kaiki',    t:'世にも奇怪な物語', len:'4分30秒'},
-  {id:'rock2-nazotoki', t:'謎解きをしよう',   len:'10分08秒'},
-  {id:'rock3-shinso',   t:'真相はここに',     len:'10分36秒'},
-  {id:'rock4-kaisen',   t:'荒波の海戦',       len:'10分35秒'},
-  {id:'rock5-tegami',   t:'手紙を出すよ',     len:'9分59秒'},
-  {id:'rock6-namida',   t:'涙の結晶',         len:'10分26秒'}
+  {id:'rock1-kaiki',    t:'世にも奇怪な物語(ロック版)', len:'4分30秒'},
+  {id:'rock2-nazotoki', t:'謎解きをしよう(ロック版)',   len:'10分08秒'},
+  {id:'rock3-shinso',   t:'真相はここに(ロック版)',     len:'10分36秒'},
+  {id:'rock4-kaisen',   t:'荒波の海戦(ロック版)',       len:'10分35秒'},
+  {id:'rock5-tegami',   t:'手紙を出すよ(ロック版)',     len:'9分59秒'},
+  {id:'rock6-namida',   t:'涙の結晶(ロック版)',         len:'10分26秒'}
 ];
 function trackList(g){
   if(g === 'rock' || g === 'classic') return (g === 'rock' ? ROCK : CLASSIC).map(function(s){ return {id:s.id, t:s.t, sub:s.len}; });
@@ -847,12 +849,16 @@ function playTrack(){
     SND.audio = new Audio(); SND.audio.loop = true; SND.audio.preload = 'auto';
     if(useGraph){ try{ var a = ac(); SND.audio.crossOrigin = 'anonymous'; SND.srcNode = a.createMediaElementSource(SND.audio); SND.srcNode.connect(SND.trackG); }catch(e){ SND.srcNode = null; } }
     SND.audio.addEventListener('error', function(){
-      if(!SND.audio.getAttribute('data-id')) return;
-      SND.missing = true; SND.audio.removeAttribute('data-id');
+      var fid = SND.audio.getAttribute('data-id'); if(!fid) return;
+      if(SND.bgmTry < BGM_DIRS.length - 1){            /* 別の場所を探す */
+        SND.bgmTry++; SND.audio.src = BGM_DIRS[SND.bgmTry] + fid + '.mp3';
+        var pp = SND.audio.play(); if(pp && pp.catch) pp.catch(function(){}); return;
+      }
+      SND.missing = true; SND.missFile = fid; SND.audio.removeAttribute('data-id');
       var m = SND.mood; SND.mood = ''; if(SND.on) synthBgm(m && m !== 'off' ? m : 'calm');
       renderSnd();
     });
-    SND.audio.addEventListener('playing', function(){ SND.missing = false; });
+    SND.audio.addEventListener('playing', function(){ SND.missing = false; if(SND.bgmTry !== undefined) bgmDirOk = SND.bgmTry; });
     SND.audio.addEventListener('ended', function(){   // メドレー:次の曲へ
       if(SND.rep !== 'all' || !SND.on) return;
       var list = trackList(genreOf(SND.track)), i = list.map(function(t){ return t.id; }).indexOf(SND.track);
@@ -863,7 +869,7 @@ function playTrack(){
   var file = tr;
   SND.audio.loop = SND.rep !== 'all';
   if(SND.audio.getAttribute('data-id') !== file){
-    SND.audio.setAttribute('data-id', file); SND.audio.src = BGM_DIR + file + '.mp3';
+    SND.audio.setAttribute('data-id', file); SND.bgmTry = bgmDirOk; SND.audio.src = BGM_DIRS[bgmDirOk] + file + '.mp3';
     var r = SND.resumeAt; SND.resumeAt = null;
     if(r) SND.audio.addEventListener('loadedmetadata', function f(){ SND.audio.removeEventListener('loadedmetadata', f); try{ SND.audio.currentTime = r * SND.audio.duration; }catch(e){} });
   } else SND.resumeAt = null;
@@ -998,7 +1004,7 @@ function renderSnd(volOnly){
         return '<button type="button" data-rep="' + o[0] + '" class="' + (SND.rep === o[0] ? 'on' : '') + '" aria-pressed="' + (SND.rep === o[0]) + '" onclick="setRepeat(\'' + o[0] + '\')">' + o[1] + '</button>';
       }).join('');
   }
-  if(SND.on && SND.missing && (cur === 'rock' || cur === 'classic')) msg += '  ※曲ファイル(bgm フォルダ)が見つからないため、合成音で再生中です';
+  if(SND.on && SND.missing && (cur === 'rock' || cur === 'classic')) msg += '  ※曲ファイル「bgm/' + (SND.missFile || SND.track) + '.mp3」が見つからないため、合成音で再生中です';
   document.getElementById('sndNow').textContent = msg;
 }
 function openSnd(){ renderSnd(); document.getElementById('ovSnd').classList.add('on'); }
