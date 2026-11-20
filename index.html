@@ -442,7 +442,7 @@ body.op-lock{overflow:hidden}
         <li>最後に、ランク(S〜D)と、<b>場面ごとに覚えておきたい対策</b>、相談先が表示されます。</li>
       </ol>
       <p class="note">登場する人物・会社・場面はすべて架空です。手口は、警察や報道で紹介されている例をもとにしたゲーム上の想定です。危険を感じたら、ためらわず<b>110番</b>を。</p>
-      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.21-v14(読み上げ機能)</p>
+      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.21-v15(オープニングの終わり方を修正)</p>
       <div class="t-links">
         <button type="button" onclick="openAbout()">🕵️ トクリュウとは・最新の状況</button>
         <button type="button" onclick="openTts()">🗣️ 読み上げの設定(全体/テロップだけ/重要事項だけ)</button>
@@ -1335,7 +1335,7 @@ function opUseImg(){
 }
 function opImgLoad(){
   var gen = ++OP.gen; OP.loading = true; OP.ready = false; OP.progAt = Date.now(); opProgress(0);
-  fetch('opening.avif').then(function(r){
+  fetch('opening.avif?v=once1').then(function(r){
     if(!r.ok) throw new Error('http ' + r.status);
     var total = +r.headers.get('Content-Length') || 0;
     if(!r.body || !r.body.getReader || !total) return r.blob();
