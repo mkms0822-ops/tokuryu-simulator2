@@ -434,7 +434,7 @@ body.op-lock{overflow:hidden}
         <li>最後に、ランク(S〜D)と、<b>場面ごとに覚えておきたい対策</b>、相談先が表示されます。</li>
       </ol>
       <p class="note">登場する人物・会社・場面はすべて架空です。手口は、警察や報道で紹介されている例をもとにしたゲーム上の想定です。危険を感じたら、ためらわず<b>110番</b>を。</p>
-      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.20-v5(ロック自動検出・オープニング・画像パック対応)</p>
+      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.20-v6(最初はロックで再生)</p>
       <div class="t-links">
         <button type="button" onclick="openAbout()">🕵️ トクリュウとは・最新の状況</button>
         <button type="button" onclick="openPriv()">📄 プライバシーポリシー・ご利用にあたって</button>
@@ -807,7 +807,7 @@ function probeBgm(){
   }
 }
 var SND = { on:false, ac:null, master:null, bgmG:null, seG:null, trackG:null, mood:'off', timer:null, step:0, drone:null,
-  audio:null, srcNode:null, missing:false, rep:ls(PFX + 'rep') === 'all' ? 'all' : 'one', track:ls(PFX + 'bgm') || 'rock1-kaiki', view:null,
+  audio:null, srcNode:null, missing:false, rep:ls(PFX + 'rep') === 'all' ? 'all' : 'one', track:ls(PFX + 'bgm2') || 'rock1-kaiki', view:null,
   bgmVol:numLs(PFX + 'bv', 0.6), seVol:numLs(PFX + 'sv', 0.8), typeSnd:ls(PFX + 'ts') !== '0' };
 
 if(!findTrack(SND.track)) SND.track = 'rock1-kaiki';
@@ -907,7 +907,7 @@ function playTrack(){
       if(SND.rep !== 'all' || !SND.on) return;
       var list = trackList(genreOf(SND.track)), i = list.map(function(t){ return t.id; }).indexOf(SND.track);
       if(i < 0) return;
-      SND.track = list[(i + 1) % list.length].id; ls(PFX + 'bgm', SND.track); playTrack(); renderSnd();
+      SND.track = list[(i + 1) % list.length].id; ls(PFX + 'bgm2', SND.track); playTrack(); renderSnd();
     });
   }
   var file = tr;
@@ -1013,7 +1013,7 @@ function selectGenre(g){
 }
 function selectTrack(id){
   if(!findTrack(id)) return;
-  SND.track = id; SND.view = genreOf(id); SND.missing = false; ls(PFX + 'bgm', id);
+  SND.track = id; SND.view = genreOf(id); SND.missing = false; ls(PFX + 'bgm2', id);
   if(id !== 'none' && !SND.on){ setSound(true); }
   var m = SND.mood && SND.mood !== 'off' ? SND.mood : 'calm';
   SND.mood = ''; stopSynth(); bgm(m);
