@@ -434,7 +434,7 @@ body.op-lock{overflow:hidden}
         <li>最後に、ランク(S〜D)と、<b>場面ごとに覚えておきたい対策</b>、相談先が表示されます。</li>
       </ol>
       <p class="note">登場する人物・会社・場面はすべて架空です。手口は、警察や報道で紹介されている例をもとにしたゲーム上の想定です。危険を感じたら、ためらわず<b>110番</b>を。</p>
-      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.20-v7(ロックは備蓄版と同じ7曲)</p>
+      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.20-v8(画像の差し替えがすぐ反映)</p>
       <div class="t-links">
         <button type="button" onclick="openAbout()">🕵️ トクリュウとは・最新の状況</button>
         <button type="button" onclick="openPriv()">📄 プライバシーポリシー・ご利用にあたって</button>
@@ -1080,6 +1080,7 @@ var IMG_DIR = 'img/', IMG_EXT = ['.webp', '.jpg', '.png'], IMAGES = {}, imgCache
 /* ===== 画像パック(img/pack01.js〜pack07.js に10枚ずつ埋め込み) =====
    パックが読めないときは、img/キー名.webp などの個別ファイルを探します */
 var IMG_PACK = {"title_hero":1,"town_evening":1,"setup_persona":1,"setup_home":1,"setup_prep":1,"setup_done":1,"v_intercom_ring":1,"v_monitor_worker":1,"v_door_chain":1,"v_worker_inside":1,"v_questions":2,"v_card":2,"v_call_official":2,"v_lookaround":2,"v_confront":2,"v_police_patrol":2,"v_end":2,"a_phone_ring":2,"a_rusuden":2,"a_caller_police":2,"a_asked_cash":3,"a_hangup_call":3,"a_bad_car":3,"a_family_call":3,"a_family_talk":3,"a_bad_money":3,"a_end":3,"h_phone_fake_police":3,"h_fake_officer_door":3,"h_bad_swap":3,"h_cash_doorstep":4,"h_call_110":4,"h_street_receiver":4,"h_end":4,"r_trash_out":4,"r_night_living":4,"r_glass_break":4,"r_sensor_light":4,"r_safe_room":4,"r_intruders":4,"r_no_resist":5,"r_bad_hurt":5,"r_police_arrive":5,"r_end":5,"s_packing":5,"s_post_draft":5,"s_photo_location":5,"s_empty_house":5,"s_dm_stranger":5,"s_burglary":5,"s_home_safe":6,"y_sns_ad":6,"y_family_dinner":6,"y_threat_msg":6,"y_police_consult":6,"y_bad_arrest":6,"y_talk_good":6,"y_end":6,"l_news_tv":6,"l_sms_link":6,"l_phone_comp":7,"l_official_site":7,"l_visit_docs":7,"l_bad_drain":7,"l_end":7}, IMG_PACK_N = 7, packState = {};
+var IMG_PACK_V = {"1":"33c728fc","2":"3ee4a0fc","3":"b11d7b4b","4":"e74c26c4","5":"aac7a006","6":"f84cf88a","7":"9915da53"};
 function dwaImgPack(n, imgs){ for(var k in imgs){ IMAGES[k] = imgs[k]; delete imgCache[k]; } }
 function loadPack(n, cb){
   var st = packState[n];
@@ -1087,7 +1088,7 @@ function loadPack(n, cb){
   if(st){ if(cb) st.w.push(cb); return; }
   st = packState[n] = {done:false, w:cb ? [cb] : []};
   var sc = document.createElement('script');
-  sc.src = IMG_DIR + 'pack' + (n < 10 ? '0' : '') + n + '.js';
+  sc.src = IMG_DIR + 'pack' + (n < 10 ? '0' : '') + n + '.js?v=' + (IMG_PACK_V[n] || '1');   /* 画像を差し替えたら番号が変わり、古いキャッシュを使わない */
   sc.async = true;
   sc.onload = sc.onerror = function(){ st.done = true; var w = st.w; st.w = []; w.forEach(function(f){ f(); }); };
   document.head.appendChild(sc);
