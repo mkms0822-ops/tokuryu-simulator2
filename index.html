@@ -434,7 +434,7 @@ body.op-lock{overflow:hidden}
         <li>最後に、ランク(S〜D)と、<b>場面ごとに覚えておきたい対策</b>、相談先が表示されます。</li>
       </ol>
       <p class="note">登場する人物・会社・場面はすべて架空です。手口は、警察や報道で紹介されている例をもとにしたゲーム上の想定です。危険を感じたら、ためらわず<b>110番</b>を。</p>
-      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.20-v4(オープニング・BGM 12曲・画像パック対応)</p>
+      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.20-v5(ロック自動検出・オープニング・画像パック対応)</p>
       <div class="t-links">
         <button type="button" onclick="openAbout()">🕵️ トクリュウとは・最新の状況</button>
         <button type="button" onclick="openPriv()">📄 プライバシーポリシー・ご利用にあたって</button>
@@ -759,15 +759,53 @@ var ROCK = [
   {id:'rock3-shinso',   t:'真相はここに(ロック版)',     len:'10分36秒'},
   {id:'rock4-kaisen',   t:'荒波の海戦(ロック版)',       len:'10分35秒'},
   {id:'rock5-tegami',   t:'手紙を出すよ(ロック版)',     len:'9分59秒'},
-  {id:'rock6-namida',   t:'涙の結晶(ロック版)',         len:'10分26秒'}
+  {id:'rock6-namida',   t:'涙の結晶(ロック版)',         len:'10分26秒'},
+  {id:'rock1-hooligans',    t:'フーリガンズ',       len:'1分16秒'},
+  {id:'rock2-saibou',       t:'細胞の復讐',         len:'1分36秒'},
+  {id:'rock3-hardpuncher',  t:'ハードパンチャー',   len:'1分30秒'},
+  {id:'rock4-kurotights',   t:'スリルな黒タイツ',   len:'1分32秒'},
+  {id:'rock5-coralreef',    t:'コーラルリーフ',     len:'1分38秒'},
+  {id:'rock6-bakuhatsu',    t:'爆発寸前!',         len:'1分30秒'},
+  {id:'rock7-dragonslayer', t:'ドラゴンスレイヤー', len:'2分01秒'}
 ];
+/* bgm フォルダに実際にある曲だけを一覧に出す(ページを開いたときに確認) */
+var BGM_AVAIL = {}, bgmProbed = false;
 function trackList(g){
-  if(g === 'rock' || g === 'classic') return (g === 'rock' ? ROCK : CLASSIC).map(function(s){ return {id:s.id, t:s.t, sub:s.len}; });
+  if(g === 'rock' || g === 'classic'){
+    var L = (g === 'rock' ? ROCK : CLASSIC).filter(function(s){ return BGM_AVAIL[s.id] !== false; }).map(function(s){ return {id:s.id, t:s.t, sub:s.len}; });
+    if(!L.length) return [{id:'!' + g, t:(g === 'rock' ? 'ロック' : 'クラシック') + 'の曲ファイルが見つかりません', sub:'bgm フォルダに ' + (g === 'rock' ? 'rock1-kaiki.mp3' : 'classic1-kaiki.mp3') + ' などを置いてください'}];
+    return L;
+  }
   if(g === 'synth') return [{id:'synth', t:'場面に合わせて変化', sub:'地震・夜・朝などで曲調が変わる合成音'}];
   return [{id:'none', t:'BGMなし', sub:'効果音だけ鳴らします'}];
 }
 function genreOf(id){ return /^rock/.test(id) ? 'rock' : /^classic/.test(id) ? 'classic' : id === 'synth' ? 'synth' : 'none'; }
-function findTrack(id){ if(!ROCK_READY && genreOf(id) === 'rock') return null; return trackList(genreOf(id)).filter(function(t){ return t.id === id; })[0]; }
+function findTrack(id){ if(!id || id.charAt(0) === '!') return null; if(!ROCK_READY && genreOf(id) === 'rock') return null; return trackList(genreOf(id)).filter(function(t){ return t.id === id; })[0]; }
+function probeBgm(){
+  if(bgmProbed || !window.fetch || !/^https?:$/.test(location.protocol)) return; bgmProbed = true;
+  var all = ROCK.concat(CLASSIC), left = all.length;
+  all.forEach(function(s){
+    var d = 0;
+    (function tryDir(){
+      if(d >= 2){ BGM_AVAIL[s.id] = false; return fin(); }
+      var dir = BGM_DIRS[d++];
+      fetch(dir + s.id + '.mp3', {method:'HEAD', cache:'no-cache'}).then(function(r){
+        if(r.ok){ BGM_AVAIL[s.id] = true; if(dir === '') bgmDirOk = 1; fin(); } else tryDir();
+      }).catch(tryDir);
+    })();
+  });
+  function fin(){
+    if(--left) return;
+    /* 選んでいた曲がないときは、同じジャンルの最初の曲 → ほかのジャンルの順に切り替える */
+    var g = genreOf(SND.track);
+    if((g === 'rock' || g === 'classic') && BGM_AVAIL[SND.track] === false){
+      var pick = trackList(g).concat(trackList(g === 'rock' ? 'classic' : 'rock')).filter(function(t){ return t.id.charAt(0) !== '!'; })[0];
+      SND.track = pick ? pick.id : 'synth'; SND.view = genreOf(SND.track); SND.missing = false;
+      if(SND.on){ var m = SND.mood && SND.mood !== 'off' ? SND.mood : 'calm'; SND.mood = ''; stopSynth(); bgm(m); }
+    }
+    renderSnd();
+  }
+}
 var SND = { on:false, ac:null, master:null, bgmG:null, seG:null, trackG:null, mood:'off', timer:null, step:0, drone:null,
   audio:null, srcNode:null, missing:false, rep:ls(PFX + 'rep') === 'all' ? 'all' : 'one', track:ls(PFX + 'bgm') || 'rock1-kaiki', view:null,
   bgmVol:numLs(PFX + 'bv', 0.6), seVol:numLs(PFX + 'sv', 0.8), typeSnd:ls(PFX + 'ts') !== '0' };
@@ -993,6 +1031,7 @@ function renderSnd(volOnly){
   }).join('');
   var playing = SND.on && SND.track !== 'none';
   tEl.innerHTML = trackList(view).map(function(t){
+    if(t.id.charAt(0) === '!') return '<p class="now" style="margin:6px 2px">⚠️ ' + esc(t.t) + '<br><small>' + esc(t.sub) + '</small></p>';
     var on = t.id === SND.track;
     return '<button type="button" class="trk' + (on ? ' on' : '') + '" data-t="' + t.id + '" onclick="selectTrack(\'' + t.id + '\')" aria-pressed="' + on + '">' +
       '<span class="ti">' + (on ? (playing ? '<span class="eq"><i></i><i></i><i></i></span>' : '⏸') : (view === 'rock' || view === 'classic' ? '♪' : view === 'synth' ? '🎛' : '🔇')) + '</span>' +
@@ -1661,6 +1700,7 @@ function updateTitle(){
   $('tBest').textContent = n + ' / ' + SCN.length;
 }
 updateTitle();
+probeBgm();
 
 /* タイトルの背景画像(img/title_hero) */
 resolveImg('title_hero', function(src){
