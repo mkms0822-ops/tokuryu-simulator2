@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>トクリュウ防犯シミュレーター|DWA防災情報センター</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="防犯シミュ">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="description" content="強盗・訪問・現金の受け渡し。犯人と直接向き合う「対面」の場面で、あなたは正しく判断できるか。トクリュウ(匿名・流動型犯罪グループ)の手口を、7つのシチュエーションで体験する防犯シミュレーター。">
 <meta property="og:title" content="トクリュウ防犯シミュレーター">
 <meta property="og:description" content="FACE TO FACE 警戒。玄関の訪問、アポ電、受け渡し、押し入り…あなたの判断で結末が変わる。">
@@ -431,6 +437,7 @@ body.op-lock{overflow:hidden}
         <button class="btn sub" type="button" onclick="startApp(false)">🔇 サウンドなしで始める</button>
         <button class="btn sub" type="button" onclick="openSnd()">🎵 BGM・音量を選ぶ</button>
         <button class="btn sub op-only" type="button" onclick="opStart(true)">🎬 オープニングを音ありで見る</button>
+        <button class="btn sub app-only" type="button" style="display:none" onclick="installApp()">📲 アプリとしてインストール</button>
       </div>
     </div>
     <div class="howto">
@@ -442,7 +449,7 @@ body.op-lock{overflow:hidden}
         <li>最後に、ランク(S〜D)と、<b>場面ごとに覚えておきたい対策</b>、相談先が表示されます。</li>
       </ol>
       <p class="note">登場する人物・会社・場面はすべて架空です。手口は、警察や報道で紹介されている例をもとにしたゲーム上の想定です。危険を感じたら、ためらわず<b>110番</b>を。</p>
-      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.21-v15(オープニングの終わり方を修正)</p>
+      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.21-v16(アプリとしてインストールに対応)</p>
       <div class="t-links">
         <button type="button" onclick="openAbout()">🕵️ トクリュウとは・最新の状況</button>
         <button type="button" onclick="openTts()">🗣️ 読み上げの設定(全体/テロップだけ/重要事項だけ)</button>
@@ -601,6 +608,7 @@ body.op-lock{overflow:hidden}
     <button class="mnu-i" type="button" onclick="closeMenu();openPriv()"><span class="ic">📄</span><span>プライバシーポリシー・ご利用にあたって<small>このシミュレーターの位置づけ、保存する情報、免責事項など</small></span></button>
     <button class="mnu-i" type="button" onclick="closeMenu();openTts()"><span class="ic">🗣️</span><span>読み上げ<small>全体/テロップだけ/重要事項だけ を選べます</small></span></button>
     <button class="mnu-i" type="button" onclick="closeMenu();openSnd()"><span class="ic">🎵</span><span>BGM・音量<small>ロック・クラシック・シンセから選べます</small></span></button>
+    <button class="mnu-i app-only" type="button" style="display:none" onclick="closeMenu();installApp()"><span class="ic">📲</span><span>アプリとしてインストール<small>ホーム画面から、アプリのようにすぐ開けます</small></span></button>
     <button class="mnu-i op-only" type="button" onclick="closeMenu();opStart(true)"><span class="ic">🎬</span><span>オープニングを音ありで見る</span></button>
     <a class="mnu-i" href="https://link.amazon/B07uDN948" target="_blank" rel="noopener sponsored" onclick="closeMenu()"><span class="ic">🛒</span><span>Amazon防犯対策グッズ<small>補助錠・センサーライト・防犯カメラなど ↗</small></span></a>
     <a class="mnu-i" href="https://bousai0111.info/" target="_blank" rel="noopener" onclick="closeMenu()"><span class="ic">🏠</span><span>DWA防災情報センター<small>トップページを開きます ↗</small></span></a>
@@ -638,6 +646,7 @@ body.op-lock{overflow:hidden}
   <ul>
     <li>次回も同じ設定で遊べるよう、ブラウザの保存機能(ローカルストレージ)に、<b>表示の設定(明るさ・文字サイズ・文字の速さ)、サウンドの設定、暮らしと備えの選択、シチュエーションごとのベスト記録</b>だけを保存します。</li>
     <li>保存した内容は、お使いの端末の中にだけ残り、外部へは送信されません。ブラウザの設定から「サイトデータの削除」を行うと消去できます。</li>
+    <li>アプリとして使えるようにするため、ページ・画像・効果音などのファイルを、ブラウザの保存領域(キャッシュ)に保存します。中身はこのシミュレーターのファイルだけで、個人の情報は含みません。</li>
   </ul>
 
   <h4>5. 外部サイトへのリンク・電話</h4>
@@ -694,6 +703,22 @@ body.op-lock{overflow:hidden}
     <div class="vol"><label for="ttsR">読み上げの速さ</label><input type="range" id="ttsR" min="60" max="200" step="10" oninput="setTtsRate(this.value/100)" onchange="setTtsRate(this.value/100,true)"><span id="ttsRLb"></span></div>
   </div>
   <div style="text-align:right;margin-top:8px"><button class="back" type="button" onclick="closeSnd()">閉じる</button></div>
+</div></div>
+
+<div class="ov" id="ovApp" onclick="if(event.target===this)closeApp()"><div class="log pp" role="dialog" aria-modal="true" aria-labelledby="apTitle">
+  <h3 id="apTitle">📲 アプリとしてインストール</h3>
+  <p class="pp-lead">ホーム画面に追加すると、アプリのようにすぐ開けます。一度開いた画像や効果音は端末に保存されるので、電波の弱い場所でも遊べます。</p>
+  <h4>iPhone・iPad(Safari)</h4>
+  <ol>
+    <li>画面下(iPadは上)の<b>共有ボタン</b>(四角から矢印が出ているマーク)を押します。</li>
+    <li>メニューを下にずらして、<b>「ホーム画面に追加」</b>を選びます。</li>
+    <li>右上の<b>「追加」</b>を押すと、ホーム画面に「防犯シミュ」のアイコンができます。</li>
+  </ol>
+  <h4>Android・パソコン(Chrome・Edge)</h4>
+  <ol>
+    <li>アドレスバーの横の<b>インストールのマーク</b>、またはメニュー(︙)の<b>「アプリをインストール」「ホーム画面に追加」</b>を選びます。</li>
+  </ol>
+  <div style="text-align:right;margin-top:10px"><button class="back" type="button" onclick="closeApp()">閉じる</button></div>
 </div></div>
 
 <div id="toast"></div>
@@ -2456,6 +2481,35 @@ function ttsResult(){
 }
 document.addEventListener('visibilitychange', function(){ if(document.hidden) ttsStop(); });
 renderTts();
+
+
+/* =========================================================
+   アプリとしてインストール(PWA)
+   ========================================================= */
+var APP = { prompt:null };
+function appStandalone(){ return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true; }
+function appIOS(){ var ua = navigator.userAgent || ''; return /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && 'ontouchend' in document); }
+function renderApp(){
+  var show = !appStandalone() && (!!APP.prompt || appIOS());
+  document.querySelectorAll('.app-only').forEach(function(el){ el.style.display = show ? '' : 'none'; });
+}
+window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); APP.prompt = e; renderApp(); });
+window.addEventListener('appinstalled', function(){ APP.prompt = null; renderApp(); toast('📲 アプリとしてインストールしました。ホーム画面から開けます'); });
+function installApp(){
+  se('click');
+  if(APP.prompt){
+    var p = APP.prompt; APP.prompt = null;
+    p.prompt();
+    (p.userChoice || Promise.resolve({})).then(function(r){ if(r && r.outcome === 'dismissed') toast('あとからでもインストールできます'); renderApp(); });
+    return;
+  }
+  $('ovApp').classList.add('on');
+}
+function closeApp(){ $('ovApp').classList.remove('on'); }
+if('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')){
+  window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+}
+renderApp();
 
 </script>
 </body>
