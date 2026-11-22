@@ -2,7 +2,7 @@
    ・ページ(index.html)は「ネット優先」:更新をすぐ反映し、オフラインのときは保存した版を出す
    ・画像パック・効果音・オープニング・アイコンは「保存優先」:ファイル名の ?v= が変わると新しく取り直す
    ・BGM(mp3)と動画は、途中から読む再生方式のため保存しない(オフラインでは合成音のBGMになる) */
-var VER = 'tokuryu-v16';
+var VER = 'tokuryu-v18';
 var CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', function(e){

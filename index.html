@@ -10,7 +10,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="防犯シミュ">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="description" content="強盗・訪問・現金の受け渡し。犯人と直接向き合う「対面」の場面で、あなたは正しく判断できるか。トクリュウ(匿名・流動型犯罪グループ)の手口を、7つのシチュエーションで体験する防犯シミュレーター。">
+<meta name="description" content="強盗・訪問・現金の受け渡し。犯人と直接向き合う「対面」の場面で、あなたは正しく判断できるか。トクリュウ(匿名・流動型犯罪グループ)の手口を、8つのシチュエーションで体験する防犯シミュレーター。">
 <meta property="og:title" content="トクリュウ防犯シミュレーター">
 <meta property="og:description" content="FACE TO FACE 警戒。玄関の訪問、アポ電、受け渡し、押し入り…あなたの判断で結末が変わる。">
 <meta name="theme-color" content="#0f1522">
@@ -428,8 +428,8 @@ body.op-lock{overflow:hidden}
       <h1>トクリュウ防犯<br><em>シミュレーター</em></h1>
       <p>強盗・訪問・現金の受け渡し。<b>犯人と直接向き合う「対面」の場面</b>は、お金だけでなく、けがや命の危険に直結します。<br>玄関のインターホン、1本の電話、SNSの投稿。あなたの<b>その場の判断</b>で、結末は大きく変わります。</p>
       <div class="stat">
-        <div>シチュエーション<b>7パターン</b></div>
-        <div>判断ポイント<b>28か所</b></div>
+        <div>シチュエーション<b>8パターン</b></div>
+        <div>判断ポイント<b>32か所</b></div>
         <div>クリアした場面<b id="tBest">0 / 7</b></div>
       </div>
       <div class="btns">
@@ -443,13 +443,13 @@ body.op-lock{overflow:hidden}
     <div class="howto">
       <h2>遊び方</h2>
       <ol>
-        <li>最初に、<b>あなたの暮らし</b>(家族・住まい)と、<b>ふだんの防犯の備え</b>を選びます。</li>
-        <li>7つのシチュエーションから、挑戦したい場面を選びます。<b>7つ全部に続けて挑戦</b>することもできます。</li>
+        <li>最初に、<b>あなたの暮らし</b>(家族・住まい)、<b>ふだんの防犯の備え</b>、<b>金庫・貴重品の守り方</b>を選びます。</li>
+        <li>8つのシチュエーションから、挑戦したい場面を選びます。<b>8つ全部に続けて挑戦</b>することもできます。</li>
         <li>場面ごとに、犯人からの「声かけ」や「要求」が来ます。選んだ行動がその場で<b>判定</b>され、<b>身の安全・お金・個人情報</b>のゲージが変わります。</li>
         <li>最後に、ランク(S〜D)と、<b>場面ごとに覚えておきたい対策</b>、相談先が表示されます。</li>
       </ol>
       <p class="note">登場する人物・会社・場面はすべて架空です。手口は、警察や報道で紹介されている例をもとにしたゲーム上の想定です。危険を感じたら、ためらわず<b>110番</b>を。</p>
-      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.21-v16(アプリとしてインストールに対応)</p>
+      <p class="note" id="verNote" style="opacity:.7;font-size:12px">バージョン 2026.11.22-v18(完成版:8シチュエーション・画像82枚)</p>
       <div class="t-links">
         <button type="button" onclick="openAbout()">🕵️ トクリュウとは・最新の状況</button>
         <button type="button" onclick="openTts()">🗣️ 読み上げの設定(全体/テロップだけ/重要事項だけ)</button>
@@ -467,7 +467,7 @@ body.op-lock{overflow:hidden}
     <p class="note" style="margin:-4px 0 12px" id="selBase"></p>
     <div class="grid" id="selGrid"></div>
     <div class="btns" style="margin-top:16px">
-      <button class="btn red" type="button" onclick="playAll()">🔥 7つ全部に続けて挑戦</button>
+      <button class="btn red" type="button" onclick="playAll()">🔥 8つ全部に続けて挑戦</button>
       <button class="btn sub" type="button" style="color:var(--tx);border-color:var(--line)" onclick="runSetup()">⚙️ 暮らし・備えを選び直す</button>
       <button class="btn sub" type="button" style="color:var(--tx);border-color:var(--line)" onclick="toTitle()">タイトルへ</button>
     </div>
@@ -1128,8 +1128,8 @@ var PALETTE = {
 var IMG_DIR = 'img/', IMG_EXT = ['.webp', '.jpg', '.png'], IMAGES = {}, imgCache = {}, curImg = null;
 /* ===== 画像パック(img/pack01.js〜pack07.js に10枚ずつ埋め込み) =====
    パックが読めないときは、img/キー名.webp などの個別ファイルを探します */
-var IMG_PACK = {"title_hero":1,"town_evening":1,"setup_persona":1,"setup_home":1,"setup_prep":1,"setup_done":1,"v_intercom_ring":1,"v_monitor_worker":1,"v_door_chain":1,"v_worker_inside":1,"v_questions":2,"v_card":2,"v_call_official":2,"v_lookaround":2,"v_confront":2,"v_police_patrol":2,"v_end":2,"a_phone_ring":2,"a_rusuden":2,"a_caller_police":2,"a_asked_cash":3,"a_hangup_call":3,"a_bad_car":3,"a_family_call":3,"a_family_talk":3,"a_bad_money":3,"a_end":3,"h_phone_fake_police":3,"h_fake_officer_door":3,"h_bad_swap":3,"h_cash_doorstep":4,"h_call_110":4,"h_street_receiver":4,"h_end":4,"r_trash_out":4,"r_night_living":4,"r_glass_break":4,"r_sensor_light":4,"r_safe_room":4,"r_intruders":4,"r_no_resist":5,"r_bad_hurt":5,"r_police_arrive":5,"r_end":5,"s_packing":5,"s_post_draft":5,"s_photo_location":5,"s_empty_house":5,"s_dm_stranger":5,"s_burglary":5,"s_home_safe":6,"y_sns_ad":6,"y_family_dinner":6,"y_threat_msg":6,"y_police_consult":6,"y_bad_arrest":6,"y_talk_good":6,"y_end":6,"l_news_tv":6,"l_sms_link":6,"l_phone_comp":7,"l_official_site":7,"l_visit_docs":7,"l_bad_drain":7,"l_end":7}, IMG_PACK_N = 7, packState = {};
-var IMG_PACK_V = {"1":"33c728fc","2":"82300696","3":"fe4c3265","4":"a53f1d67","5":"18932d95","6":"7a2e0cfd","7":"9915da53"};
+var IMG_PACK = {"title_hero":1,"town_evening":1,"setup_persona":1,"setup_home":1,"setup_prep":1,"setup_done":1,"v_intercom_ring":1,"v_monitor_worker":1,"v_door_chain":1,"v_worker_inside":1,"v_questions":2,"v_card":2,"v_call_official":2,"v_lookaround":2,"v_confront":2,"v_police_patrol":2,"v_end":2,"a_phone_ring":2,"a_rusuden":2,"a_caller_police":2,"a_asked_cash":3,"a_hangup_call":3,"a_bad_car":3,"a_family_call":3,"a_family_talk":3,"a_bad_money":3,"a_end":3,"h_phone_fake_police":3,"h_fake_officer_door":3,"h_bad_swap":3,"h_cash_doorstep":4,"h_call_110":4,"h_street_receiver":4,"h_end":4,"r_trash_out":4,"r_night_living":4,"r_glass_break":4,"r_sensor_light":4,"r_safe_room":4,"r_intruders":4,"r_no_resist":5,"r_bad_hurt":5,"r_police_arrive":5,"r_end":5,"s_packing":5,"s_post_draft":5,"s_photo_location":5,"s_empty_house":5,"s_dm_stranger":5,"s_burglary":5,"s_home_safe":6,"y_sns_ad":6,"y_family_dinner":6,"y_threat_msg":6,"y_police_consult":6,"y_bad_arrest":6,"y_talk_good":6,"y_end":6,"l_news_tv":6,"l_sms_link":6,"l_phone_comp":7,"l_official_site":7,"l_visit_docs":7,"l_bad_drain":7,"l_end":7,"setup_safe":8,"k_leave_home":8,"k_window_check":8,"k_ladder":8,"k_timer_light":8,"k_intruder_window":8,"k_quick_entry":8,"k_struggle_5min":8,"k_give_up":8,"k_ransacked":8,"k_safe_taken":9,"k_safe_fixed":9,"k_hidden_valuables":9,"k_return_home":9,"k_call_110":9,"k_window_scratch":9,"k_end":9}, IMG_PACK_N = 9, packState = {};
+var IMG_PACK_V = {"1":"33c728fc","2":"82300696","3":"fe4c3265","4":"a53f1d67","5":"18932d95","6":"7a2e0cfd","7":"9915da53","8":"18fd8fce","9":"79292116"};
 function dwaImgPack(n, imgs){ for(var k in imgs){ IMAGES[k] = imgs[k]; delete imgCache[k]; } }
 function loadPack(n, cb){
   var st = packState[n];
@@ -1616,7 +1616,10 @@ var PREP = {
   intercom:{t:'録画機能つきインターホン', ic:'📹'},
   lock:    {t:'補助錠・防犯フィルム', ic:'🔒'},
   cam:     {t:'センサーライト・防犯カメラ', ic:'💡'},
-  nocash:  {t:'自宅に多額の現金を置かない', ic:'🏦'}
+  nocash:  {t:'自宅に多額の現金を置かない', ic:'🏦'},
+  safe_in: {t:'現金・貴重品は金庫に入れる', ic:'🗄️'},
+  safe_fix:{t:'金庫を床や壁に固定', ic:'🔩'},
+  hide:    {t:'貴重品を分けて隠す', ic:'🫙'}
 };
 var BASE = null;
 try{ BASE = JSON.parse(ls(PFX + 'base') || 'null'); }catch(e){ BASE = null; }
@@ -1721,7 +1724,9 @@ var SCN = [
   {id:'yami', ic:'💼', t:'闇バイトの誘い', rl:'家族が実行役に', lv:4, ld:'「高収入」「即金」「運ぶだけ」。家族や自分が、気づかないうちに犯罪の実行役にされるかもしれません。',
    dos:['「高収入」「即金」「だれでもできる」「運ぶだけ・受け取るだけ」は、犯罪の入り口の言葉。','応募すると、身分証・顔写真・家族の情報を送らされ、脅されて抜けられなくなることがある。','応募した・誘われた人は、犯行に加わる前に、すぐ#9110か110番へ。','家族で、ふだんから話しておく。'], run:scYami},
   {id:'leak', ic:'🗂️', t:'個人情報の漏えいのあと', rl:'なりすましの連絡・訪問', lv:2, ld:'使っている会社から個人情報が漏れたというニュース。その情報を使った「補償」のなりすましが来ます。',
-   dos:['漏えいのニュースに自分の使う会社が出たら、会社の公式サイトで発表を確認する。','メール・SMSのリンクは押さず、公式サイトやアプリから確認する。','電話で口座番号・暗証番号を聞かれても答えない。','見知らぬ電話・訪問・メールに、いつも以上に注意する。'], run:scLeak}
+   dos:['漏えいのニュースに自分の使う会社が出たら、会社の公式サイトで発表を確認する。','メール・SMSのリンクは押さず、公式サイトやアプリから確認する。','電話で口座番号・暗証番号を聞かれても答えない。','見知らぬ電話・訪問・メールに、いつも以上に注意する。'], run:scLeak},
+  {id:'aki', ic:'🏚️', t:'空き巣被害', rl:'留守中の侵入', lv:3, ld:'1泊2日の外出中、留守の家がねらわれます。戸締まりと防犯設備で「侵入にかかる時間」が変わり、結末も変わります。',
+   dos:['外出時は、玄関だけでなく、すべての窓・トイレや浴室の小窓・勝手口まで施錠する(住宅の侵入窃盗の約半数は無締まりから)。','補助錠・防犯フィルムで「侵入に5分以上かかる家」に。5分かかると約7割の泥棒があきらめるという調査がある。','脚立・ゴミ箱・室外機・物置など、足場になる物を窓の近くに置かない。','長く留守にするときは、新聞・郵便を止め、タイマー照明や近所への声かけで留守に見せない。','現金・貴重品は金庫に入れ、金庫は床や壁に固定する。多額の現金は家に置かない。','荒らされていたら中に入らず、離れた場所から110番。現場はそのままに。'], run:scAki}
 ];
 function scnById(id){ return SCN.filter(function(s){ return s.id === id; })[0]; }
 
@@ -1781,8 +1786,15 @@ async function setupMain(){
     {t:'センサーライト・防犯カメラ', v:'cam'},
     {t:'自宅に多額の現金を置かない', sub:'お金は銀行に', v:'nocash'}
   ], {img:'setup_prep', ic:'🔒', lb:'防犯の備え'});
-  BASE.prep = pr; ls(PFX + 'base', JSON.stringify(BASE)); renderHud();
-  await say(H(pr.length ? 'あなたの備えは<<' + pr.length + 'つ>>。<br>それでは、7つの場面で、あなたの判断を試してみましょう。' : '防犯の備えは、特にしていません。<br>それでは、7つの場面で、あなたの判断を試してみましょう。'), {img:'setup_done', ic:'✅', lb:'準備完了', pal:pr.length ? 'good' : 'title'});
+  BASE.prep = pr; renderHud();
+  var sv = await askMulti('現金や貴重品の守り方は?(いくつでも)', [
+    {t:'現金・貴重品は金庫に入れている', sub:'通帳・印鑑・貴金属も', v:'safe_in'},
+    {t:'金庫を床や壁にボルトで固定している', sub:'金庫ごと持ち去られないように', v:'safe_fix'},
+    {t:'貴重品を何か所かに分けて、見つかりにくい場所に隠している', sub:'タンスや仏壇など「定番の場所」は避ける', v:'hide'}
+  ], {img:'setup_safe', ic:'🗄️', lb:'金庫・貴重品'});
+  if(sv.indexOf('safe_fix') >= 0 && sv.indexOf('safe_in') < 0) sv.unshift('safe_in');
+  BASE.prep = pr.concat(sv); pr = BASE.prep; ls(PFX + 'base', JSON.stringify(BASE)); renderHud();
+  await say(H(pr.length ? 'あなたの備えは<<' + pr.length + 'つ>>。<br>それでは、8つの場面で、あなたの判断を試してみましょう。' : '防犯の備えは、特にしていません。<br>それでは、8つの場面で、あなたの判断を試してみましょう。'), {img:'setup_done', ic:'✅', lb:'準備完了', pal:pr.length ? 'good' : 'title'});
   showSelect();
 }
 
@@ -2315,11 +2327,146 @@ async function scLeak(){
   await say(H('※漏えいと強盗事件を結びつけた報道を確認したものではありません。<br>ただ、[漏れた情報は「本物らしさ」に使われます。]'), {img:'l_end', ic:'🗂️', lb:'まとめ', pal:'good', mood:'hope'});
 }
 
+/* ---------- 8. 空き巣被害 ---------- */
+async function scAki(){
+  var house = BASE.home === 'house';
+  await say(H('土曜の朝。今日は親せきの法事で、[1泊2日の外出]です。<br>あしたの夕方まで、家は留守になります。'), {img:'k_leave_home', ic:'🧳', lb:'外出の朝', pal:'morning', mood:'calm'});
+  var a = await ask('出かける前の戸締まりは?', [
+    {t:'玄関の鍵はかけた。2階やトイレの小窓は、開けたままでいい', v:'part'},
+    {t:'玄関も、すべての窓(2階・トイレや浴室の小窓・勝手口)も鍵をかける', v:'ok'}
+  ], {img:'k_window_check'});
+  var full = a === 'ok';
+  if(full) await judge(true, {t:'すべての窓と出入口に鍵をかけた', img:'k_window_check',
+    res:'玄関・窓・小窓・勝手口。<<鍵のかかっていない場所は、ひとつもありません。>>',
+    why:'住宅の侵入窃盗は、約半数が鍵のかかっていない場所(無締まり)から入られています。2階や小窓も忘れずに施錠する。'});
+  else await judge(false, {t:'小窓の鍵をかけずに出かけた', img:'k_window_check',
+    res:'トイレの小窓が、{少しだけ開いたまま}です。',
+    why:'住宅の侵入窃盗は、約半数が鍵のかかっていない場所(無締まり)から。「小さい窓だから」「2階だから」は通用しません。',
+    d:{safe:-10}, tr:'外出時に、小窓の鍵をかけなかった', pt:'外出時は、2階・小窓・勝手口まで、すべて施錠する。'});
+
+  await say(H(house ? '玄関を出ると、庭の物置の横に[脚立]が立てかけてあります。<br>2階の窓の下には、[ゴミ箱とエアコンの室外機]も。' : 'ベランダには、[収納ボックスとエアコンの室外機]が、手すりのすぐそばに置いてあります。'), {img:'k_ladder', ic:'🪜', lb:'足場になる物', pal:'day'});
+  var b = await ask('どうする?', [
+    {t:'急いでいるので、そのままにして出かける', v:'leave'},
+    {t:house ? '脚立は物置にしまい、ゴミ箱も窓から離す' : '収納ボックスを手すりから離して置き直す', v:'ok'}
+  ], {img:'k_ladder'});
+  var step = b === 'ok';
+  if(step) await judge(true, {t:'足場になる物を片付けた', img:'k_ladder',
+    res:'<<高い窓へ上るための足場が、なくなりました。>>',
+    why:'ゴミ箱・室外機・物置の屋根・脚立などを足場に、2階や高い窓から入られることがあります。'});
+  else await judge(false, {t:'足場になる物をそのままにした', img:'k_ladder',
+    res:'{2階の窓まで、簡単に上れる状態}のままです。',
+    why:'足場になる物は、窓の近くに置かない。脚立は物置にしまって鍵をかける。',
+    d:{safe:-5}, tr:'脚立や室外機など、足場になる物を窓の近くに置いたままにした', pt:'脚立・ゴミ箱・室外機など、足場になる物を窓の近くに置かない。'});
+
+  var c = await ask('留守のあいだ、家の見た目はどうする?', [
+    {t:'雨戸とカーテンを全部閉め、新聞はそのまま届くようにしておく', v:'shut'},
+    {t:'新聞を止め、夜にタイマーで照明がつくようにし、お隣にも一声かけておく', v:'ok'}
+  ], {img:'k_timer_light', ic:'💡', lb:'留守に見せない', pal:'day'});
+  var look = c === 'ok';
+  if(look) await judge(true, {t:'留守に見えない工夫をした', img:'k_timer_light',
+    res:'夜になると、<<いつもどおり部屋に明かりがともりました。>>お隣さんも、気にかけてくれています。',
+    why:'長く留守にするときは、新聞・郵便を止め、タイマー照明などで留守に見せない。隣近所への声かけも効果的。'});
+  else await judge(false, {t:'「留守です」という合図を出したまま出かけた', img:'k_timer_light',
+    res:'昼間なのに雨戸が閉まったまま。夕方には、{ポストに新聞がささったまま}になりました。',
+    why:'閉めきった雨戸や、たまった新聞・郵便は、留守の目印になります。',
+    d:{info:-10}, tr:'雨戸を閉めきり、新聞をためたまま留守にした', pt:'長い留守は、新聞・郵便を止め、タイマー照明や近所への声かけで留守に見せない。'});
+
+  /* ---- 侵入のシミュレーション ---- */
+  var score = (has('lock') ? 2 : 0) + (has('cam') ? 1 : 0) + (step ? 1 : 0) + (look ? 1 : 0);
+  var level = !full ? 'none' : (has('lock') && score >= 4) ? 'strong' : score >= 2 ? 'some' : 'none';
+  await say(H('次の日の午後2時。<br>あなたの家のまわりを、[知らない男]がゆっくり歩いています。<br>' + (look ? '男は家を見上げ、しばらく様子をうかがっています。' : '男は、閉めきった雨戸と、ポストの新聞を確かめました。')), {img:'k_intruder_window', ic:'👤', lb:'留守の家をねらう', pal:'night', mood:'tense', se:'steps', day:'空き巣'});
+  var entered = true, elapsed = '';
+  if(level === 'none'){
+    if(!full){
+      await say(H('男は、{鍵のかかっていないトイレの小窓}を見つけました。<br>[0分30秒] 窓を開け、するりと中へ。'), {img:'k_quick_entry', ic:'⏱️', lb:'侵入まで 30秒', pal:'bad', mood:'danger', se:'heart'});
+      elapsed = '約30秒';
+    } else {
+      await say(H('男は、庭に面した窓に近づきました。<br>[0分40秒] ガラスを小さく割り、手を入れて鍵を回す。<br>{[1分10秒] 窓が開き、中へ。}'), {img:'k_quick_entry', ic:'⏱️', lb:'侵入まで 1分10秒', pal:'bad', mood:'danger', se:'glass', shake:1});
+      elapsed = '約1分';
+    }
+  } else if(level === 'some'){
+    await say(H('男は、庭に面した窓に近づきました。<br>[1分] ガラスを割ろうとするが、' + (has('lock') ? '防犯フィルムでなかなか破れない。' : 'すぐには鍵に手が届かない。') + '<br>[3分] ' + (has('lock') ? '補助錠に手こずり、何度も工具を持ち替える。' : (has('cam') ? 'センサーライトがつき、男は一瞬手を止める。' : '周りを気にしながら、別の窓も確かめる。')) + '<br>{[4分50秒] ついに窓が開き、中へ。}'), {img:'k_struggle_5min', ic:'⏱️', lb:'侵入まで 4分50秒', pal:'bad', mood:'danger', se:'glass'});
+    elapsed = '約5分';
+  } else {
+    await say(H('男は、庭に面した窓に近づきました。<br>[1分] ガラスを割ろうとするが、<<防犯フィルムで破れない。>><br>[3分] 割れた部分から手を入れても、<<補助錠がかかっていて窓が開かない。>><br>[5分] ' + (has('cam') ? '<<センサーライトがパッとつき、防犯カメラが男をとらえる。>>' : '<<窓はびくともしない。>>') + '<br>[5分30秒] 男は舌打ちして、<<何も取らずに立ち去りました。>>'), {img:'k_give_up', ic:'⏱️', lb:'5分以上かかり、あきらめた', pal:'good', mood:'hope', se:'steps'});
+    entered = false; elapsed = '5分以上(あきらめた)';
+  }
+  S.akiTime = elapsed; if(entered) S.akiEntered = true;
+  if(!entered) await judge(true, {t:'侵入に5分以上かかり、犯人があきらめた', img:'k_give_up',
+    res:'侵入にかかった時間:<<' + elapsed + '>>。補助錠・防犯フィルム' + (has('cam') ? '・センサーライト・防犯カメラ' : '') + 'と、出かける前の備えが重なって、<<家に入られずにすみました。>>',
+    why:'泥棒は、時間がかかるのをいちばん嫌います。侵入に5分以上かかると、約7割があきらめるという調査があります。'});
+  else await judge(false, {t:'空き巣に入られた(侵入まで' + elapsed + ')', img:level === 'some' ? 'k_struggle_5min' : 'k_quick_entry',
+    res:'侵入にかかった時間:{' + elapsed + '}。' + (level === 'some' ? 'ある程度の備えはありましたが、あと少しの時間が足りませんでした。' : (!full ? '鍵のかかっていない窓から、あっという間に入られました。' : 'ガラスを割るだけで、すぐに入られました。')),
+    why:(!full ? 'まず、すべての窓と出入口に鍵をかける。そのうえで、' : '') + '補助錠・防犯フィルムで「5分以上かかる家」に。センサーライト・防犯カメラ、足場の片付け、留守に見せない工夫も重ねる。',
+    d:{safe:level === 'some' ? -15 : -25}, tr:'留守中に空き巣に入られた(侵入まで' + elapsed + ')', pt:'補助錠・防犯フィルムで「侵入に5分以上かかる家」に。5分かかると約7割があきらめる。'});
+
+  /* ---- 金庫・貴重品 ---- */
+  if(entered){
+    var fixed = has('safe_in') && has('safe_fix'), inSafe = has('safe_in'), hid = has('hide');
+    var cash = has('nocash') ? 300000 : 1500000;
+    if(fixed){
+      await say(H('男は寝室で金庫を見つけました。<br>持ち上げようとしても、<<床にボルトで固定されていて動きません。>><br>こじ開けようとするうちに時間がたち、男はあきらめて出ていきました。'), {img:'k_safe_fixed', ic:'🔩', lb:'固定された金庫', pal:'day', mood:'tense'});
+      await judge(true, {t:'固定した金庫が、現金と貴重品を守った', img:'k_safe_fixed',
+        res:'部屋は荒らされましたが、<<金庫の中の現金・通帳・貴金属は無事でした。>>',
+        why:'金庫は「金庫ごと持ち去られる」ことがあります。床や壁にボルトで固定すると、持ち出せません。', d:{money:-5, lost:10000}});
+    } else if(hid){
+      await say(H('男はタンスや仏壇の引き出しを次々に開けていきます。<br>でも、<<分けて隠した貴重品は見つかりません。>>' + (inSafe ? '<br>{金庫は、そのまま運び出されました。}' : '')), {img:'k_hidden_valuables', ic:'🫙', lb:'見つからない', pal:'day', mood:'tense'});
+      if(inSafe) await judge(false, {t:'金庫ごと持ち去られた', img:'k_safe_taken',
+        res:'隠した物は無事でしたが、{固定していなかった金庫は、中身ごと持ち去られました。}',
+        why:'金庫は床や壁に固定する。固定していない小型の金庫は、そのまま運び出されることがあります。',
+        d:{money:-25, lost:Math.round(cash / 2)}, tr:'固定していない金庫を、中身ごと持ち去られた', pt:'金庫は床や壁にボルトで固定する。'});
+      else await judge(true, {t:'分けて隠した貴重品は見つからなかった', img:'k_hidden_valuables',
+        res:'取られたのは、{机の上の財布の現金}だけ。<<隠した貴重品は無事でした。>>',
+        why:'空き巣は短い時間で、タンス・仏壇・引き出しなど「定番の場所」を探します。分けて隠すと見つかりにくい。さらに金庫に入れて固定すると安心。', d:{money:-10, lost:30000}});
+    } else if(inSafe){
+      await say(H('男は寝室の金庫を見つけると、{そのまま抱えて運び出しました。}'), {img:'k_safe_taken', ic:'🗄️', lb:'金庫ごと持ち去り', pal:'bad', mood:'danger'});
+      await judge(false, {t:'固定していない金庫を、中身ごと持ち去られた', img:'k_safe_taken',
+        res:'金庫の中の{現金・通帳・貴金属}が、すべてなくなりました。',
+        why:'金庫に入れるだけでは不十分です。床や壁にボルトで固定し、持ち出せないようにする。',
+        d:{money:has('nocash') ? -25 : -55, lost:cash}, tr:'固定していない金庫を、中身ごと持ち去られた', pt:'金庫は床や壁にボルトで固定する。'});
+    } else {
+      await say(H('男はタンスの引き出しを次々に開け、{現金と貴金属}を見つけ出しました。'), {img:'k_ransacked', ic:'💸', lb:'荒らされた部屋', pal:'bad', mood:'danger'});
+      await judge(false, {t:'タンスの現金と貴金属を盗まれた', img:'k_ransacked',
+        res:'{現金' + yen(cash) + 'と、指輪やネックレス}がなくなりました。' + (has('nocash') ? '多額の現金を置いていなかったので、被害は少なくすみました。' : ''),
+        why:'タンス・仏壇・引き出しは、まっ先に探されます。現金・貴重品は金庫に入れて固定する、分けて隠す、多額の現金は家に置かない。',
+        d:{money:has('nocash') ? -25 : -60, lost:cash}, tr:'タンスにしまった現金と貴金属を盗まれた', pt:'現金・貴重品は、金庫に入れて床や壁に固定する。多額の現金は家に置かない。'});
+    }
+    await say(H('翌日の夕方、家に帰ってくると…<br>{玄関のドアが少しだけ開いています。}'), {img:'k_return_home', ic:'🚪', lb:'帰宅', pal:'night', mood:'tense', se:'heart'});
+    var d = await ask('どうする?', [
+      {t:'急いで中に入り、何を取られたか確かめる', v:'in'},
+      {t:'中には入らず、家から離れた安全な場所で110番する', v:'ok'}
+    ], {img:'k_return_home'});
+    if(d === 'ok') await judge(true, {t:'中に入らず110番した', img:'k_call_110',
+      res:'警察官が到着し、家の中を確認してくれました。<<現場がそのままだったので、指紋や足跡も調べられました。>>',
+      why:'犯人がまだ中にいることもあります。中には入らず、離れた場所から110番。現場はそのままにする。'});
+    else await judge(false, {t:'荒らされた家に、自分から入った', img:'k_ransacked',
+      res:'部屋に入ると、{奥の部屋で物音が…}。あわてて外に逃げ出しました。触った物から、{犯人の手がかりも消えてしまいました。}',
+      why:'荒らされていたら、中に入らない。犯人と鉢合わせすると、空き巣が強盗に変わることがあります。離れた場所から110番。',
+      d:{safe:-30}, tr:'荒らされた家に、確かめるため自分から入った', pt:'帰宅して荒らされていたら、中に入らず、離れた場所から110番。'});
+  } else {
+    await say(H('翌日の夕方、家に帰ってくると…<br>庭に面した窓に、[割れたあと]と[こじ開けようとした傷]がありました。'), {img:'k_window_scratch', ic:'🪟', lb:'侵入しようとした跡', pal:'day', mood:'tense'});
+    var e = await ask('どうする?', [
+      {t:'入られてはいないので、自分で片付けて修理する', v:'fix'},
+      {t:'触らずに110番し、被害の届け出をする', v:'ok'}
+    ], {img:'k_window_scratch'});
+    if(e === 'ok') await judge(true, {t:'触らずに110番した', img:'k_call_110',
+      res:'警察官が窓の傷を調べ、<<近所の見回りを強めることになりました。>>' + (has('cam') ? '防犯カメラの映像も提供できました。' : ''),
+      why:'入られていなくても、侵入しようとした跡は大事な手がかり。触らずに110番し、届け出る。近所で続けてねらわれることもあります。'});
+    else await judge(false, {t:'自分で片付けてしまった', img:'k_window_scratch',
+      res:'{犯人の手がかりは、片付けと一緒に消えてしまいました。}',
+      why:'侵入しようとした跡は、捜査の手がかりになります。触らずに110番。',
+      d:{info:-10}, tr:'侵入しようとした跡を、届け出ずに片付けた'});
+  }
+  await say(H('戸締まり、補助錠・防犯フィルム、センサーライト、足場の片付け、留守に見せない工夫。<br>[一つひとつは小さくても、重なると「5分以上かかる家」になります。]<br>そして、現金と貴重品は、金庫に入れて固定。'), {img:'k_end', ic:'🏠', lb:'まとめ', pal:'good', mood:'hope'});
+}
+
 /* ===================== 結果 ===================== */
 function finish(){
   var avg = (S.safe + S.money + S.info) / 3;
   var rank = avg >= 90 ? 'S' : avg >= 75 ? 'A' : avg >= 60 ? 'B' : avg >= 40 ? 'C' : 'D';
   if(S.safe < 30 && 'SAB'.indexOf(rank) >= 0) rank = 'C';
+  if(S.akiEntered && rank === 'S') rank = 'A';   /* 空き巣に入られたらSにはしない */
+  if(S.akiEntered && S.lost >= 500000 && 'SA'.indexOf(rank) >= 0) rank = 'B';   /* 大きな被害が出たらBまで */
   var label = {S:'対面の危険を見抜いた', A:'ほぼ安全に対応できた', B:'危ない場面があった', C:'犯人に付け入るすきを与えた', D:'命や財産が危険にさらされた'}[rank];
   bgm('off'); resultSound(rank);
   var order = 'SABCD';
@@ -2333,7 +2480,7 @@ function finish(){
   showResult(rank, label);
 }
 function showResult(rank, label){
-  var t = CUR.mode === 'all' ? '7つのシチュエーション すべて' : scnById(CUR.id).ic + ' ' + scnById(CUR.id).t;
+  var t = CUR.mode === 'all' ? '8つのシチュエーション すべて' : scnById(CUR.id).ic + ' ' + scnById(CUR.id).t;
   $('rTitle').textContent = t + ' ・ ' + baseText();
   var rk = $('rRank'); rk.textContent = rank; rk.className = 'rank ' + rank;
   $('rLabel').textContent = label;
@@ -2353,7 +2500,7 @@ function showResult(rank, label){
   ttsResult();
 }
 function shareResult(ev){
-  var r = $('rRank').textContent, t = CUR.mode === 'all' ? '7つのシチュエーションすべて' : '「' + scnById(CUR.id).t + '」';
+  var r = $('rRank').textContent, t = CUR.mode === 'all' ? '8つのシチュエーションすべて' : '「' + scnById(CUR.id).t + '」';
   dwaShare(ev, 'トクリュウ防犯シミュレーターで' + t + 'に挑戦し、ランク' + r + '「' + $('rLabel').textContent + '」でした。強盗・訪問・受け渡し…「対面」の場面で、あなたは正しく判断できる?');
 }
 
